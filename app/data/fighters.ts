@@ -1,0 +1,30 @@
+import type { Fighter } from "../types/battle";
+
+export const INITIAL_PLAYER: Fighter = {
+  name: "대학원생",
+  hp: 50,
+  maxHp: 50,
+  level: 7,
+  moves: [
+    { name: "DBpia AI 에이전트 활용하기", damage: 30, pp: 5, maxPp: 5 },
+    { name: "밤샘 연구", damage: 12, pp: 3, maxPp: 3 },
+    { name: "커피 수혈", damage: 5, pp: 5, maxPp: 5 },
+    { name: "Rest", damage: 0, healAmount: 12, pp: 2, maxPp: 2 },
+  ],
+};
+
+export const INITIAL_ENEMY: Fighter = {
+  name: "교수",
+  hp: 45,
+  maxHp: 45,
+  moves: [
+    { name: "리뷰어 #2 소환", damage: 9, pp: 99, maxPp: 99 },
+    { name: "논문 리젝", damage: 30, pp: 3, maxPp: 3 },
+    { name: "주말 미팅 잡기", damage: 15, pp: 5, maxPp: 5 },
+    { name: "추가 실험 요청", damage: 0, healAmount: 8, pp: 3, maxPp: 3 },
+  ],
+};
+
+export const TURN_DELAY_MS = 450;
+/** 로그 한 문장 표시 시간 (ms) */
+export const MESSAGE_DELAY_MS = 1200;
