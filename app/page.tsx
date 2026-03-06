@@ -77,18 +77,20 @@ export default function Page() {
 
           {/* 적 스프라이트 공간 — 상단 우측 */}
           <div
-            className="absolute top-[6%] right-[4%] w-[35%] aspect-square border border-dashed border-gray-400 bg-[#e0e0d8] flex items-center justify-center"
+            className="absolute top-[6%] right-[4%] w-[35%] aspect-square"
             aria-hidden
           >
-            <span className="text-[7px] text-gray-400">교수</span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/paper.png" alt="논문" className="w-full h-full object-contain" style={{ imageRendering: "pixelated" }} />
           </div>
 
           {/* 플레이어 스프라이트 공간 — 하단 좌측 */}
           <div
-            className="absolute bottom-[6%] left-[4%] w-[35%] aspect-square border border-dashed border-gray-400 bg-[#e0e0d8] flex items-center justify-center"
+            className="absolute bottom-[6%] left-[4%] w-[35%] aspect-square"
             aria-hidden
           >
-            <span className="text-[7px] text-gray-400">대학원생</span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/student.png" alt="대학원생" className="w-full h-full object-contain" style={{ imageRendering: "pixelated" }} />
           </div>
 
           {/* 플레이어 info 박스 — 하단 우측 */}
