@@ -34,6 +34,10 @@ export function consumeMove(fighter: Fighter, index: number): Fighter {
   };
 }
 
+const EFFECT_WEAK = "효과는 조금 부족한 듯 하다";
+const EFFECT_GREAT = "효과는 굉장했다!";
+const DAMAGE_THRESHOLD = 15; // 이하면 부족, 초과면 굉장
+
 export function applyMove(
   attacker: Fighter,
   defender: Fighter,
@@ -41,21 +45,25 @@ export function applyMove(
 ): { attacker: Fighter; defender: Fighter; resultLine: string } {
   if (move.damage > 0) {
     const nextDefenderHp = clampHp(defender.hp - move.damage, defender.maxHp);
+    const effectMsg =
+      move.damage <= DAMAGE_THRESHOLD ? EFFECT_WEAK : EFFECT_GREAT;
     return {
       attacker,
       defender: { ...defender, hp: nextDefenderHp },
-      resultLine: `${defender.name}에게 ${move.damage} 데미지!`,
+      resultLine: effectMsg,
     };
   }
 
   const healAmount = move.healAmount ?? 0;
   const nextAttackerHp = clampHp(attacker.hp + healAmount, attacker.maxHp);
   const actualHeal = nextAttackerHp - attacker.hp;
+  const effectMsg =
+    actualHeal <= DAMAGE_THRESHOLD ? EFFECT_WEAK : EFFECT_GREAT;
 
   return {
     attacker: { ...attacker, hp: nextAttackerHp },
     defender,
-    resultLine: `${attacker.name}의 HP가 ${actualHeal} 회복됐다!`,
+    resultLine: effectMsg,
   };
 }
 
