@@ -8,8 +8,8 @@ export const INITIAL_PLAYER: Fighter = {
   moves: [
     { name: "DBpia AI 에이전트 활용하기", damage: 30, pp: 5, maxPp: 5 },
     { name: "밤샘 연구", damage: 12, pp: 3, maxPp: 3 },
-    { name: "커피 수혈", damage: 5, pp: 5, maxPp: 5 },
-    { name: "Rest", damage: 0, healAmount: 12, pp: 2, maxPp: 2 },
+    { name: "논문 작성", damage: 5, pp: 5, maxPp: 5 },
+    { name: "커피 수혈", damage: 0, healAmount: 12, pp: 2, maxPp: 2 },
   ],
 };
 
@@ -18,10 +18,10 @@ export const INITIAL_ENEMY: Fighter = {
   hp: 45,
   maxHp: 45,
   moves: [
-    { name: "리뷰어 #2 소환", damage: 9, pp: 99, maxPp: 99 },
+    { name: "리뷰어 #2 소환", damage: 15, pp: 99, maxPp: 99 },
     { name: "논문 리젝", damage: 30, pp: 3, maxPp: 3 },
-    { name: "주말 미팅 잡기", damage: 15, pp: 5, maxPp: 5 },
-    { name: "추가 실험 요청", damage: 0, healAmount: 8, pp: 3, maxPp: 3 },
+    { name: "주말 미팅 잡기", damage: 5, pp: 5, maxPp: 5 },
+    { name: "추가 실험 요청", damage: 10, pp: 3, maxPp: 3 },
   ],
 };
 

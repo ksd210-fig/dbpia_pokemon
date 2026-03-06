@@ -48,15 +48,11 @@ export default function Page() {
   const showMoveMenu = state.status === "idle" && (log.length === 0 || logReadyForMenu);
 
   return (
-    <div className="w-full h-dvh bg-black flex items-center justify-center">
-      {/* GBC 해상도: 160×144 */}
+    <div className="w-full bg-[#e8e0d0] flex items-center justify-center py-4">
+      {/* 해상도: 640×576 */}
       <main
-        className="relative flex flex-col bg-[#f0f0e8] overflow-hidden"
-        style={{
-          imageRendering: "pixelated",
-          width: "min(100vw, calc(100dvh * 160 / 144))",
-          aspectRatio: "160 / 144",
-        }}
+        className="game-viewport relative flex flex-col bg-[#f0f0e8] overflow-hidden border-4 border-[#1a1a1a]"
+        style={{ imageRendering: "pixelated" }}
       >
         {/* 배틀 필드 */}
         <div className="relative flex-1 border-b-[2px] border-black">

@@ -23,3 +23,20 @@ body {
   font-size: 10px;
   line-height: 1.6;
 }
+
+/* 모바일: 화면에 꽉 차게 / 데스크톱: 게임보이처럼 작은 고정 크기 (640:576 비율 유지) */
+.game-viewport {
+  aspect-ratio: 640 / 576;
+  max-width: 640px;
+  flex-shrink: 0;
+  min-height: 0;
+  /* 모바일: 뷰포트에 맞춤 */
+  width: min(100vw, 640px, calc(100dvh * 640 / 576));
+}
+@media (min-width: 768px) {
+  .game-viewport {
+    width: 360px;
+    height: calc(360px * 576 / 640); /* 640:576 비율 고정 */
+    max-width: 360px;
+  }
+}
