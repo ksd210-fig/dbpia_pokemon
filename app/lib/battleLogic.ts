@@ -34,36 +34,38 @@ export function consumeMove(fighter: Fighter, index: number): Fighter {
   };
 }
 
-const EFFECT_WEAK = "효과는 조금 부족한 듯 하다";
+const EFFECT_WEAK = "효과는 미미한 듯 하다";
 const EFFECT_GREAT = "효과는 굉장했다!";
-const DAMAGE_THRESHOLD = 15; // 이하면 부족, 초과면 굉장
+const DAMAGE_THRESHOLD_LOW = 10;  // 이하면 미미
+const DAMAGE_THRESHOLD_HIGH = 20; // 이상이면 굉장
+
+function getEffectMessage(amount: number): string | null {
+  if (amount <= DAMAGE_THRESHOLD_LOW) return EFFECT_WEAK;
+  if (amount >= DAMAGE_THRESHOLD_HIGH) return EFFECT_GREAT;
+  return null;
+}
 
 export function applyMove(
   attacker: Fighter,
   defender: Fighter,
   move: Move
-): { attacker: Fighter; defender: Fighter; resultLine: string } {
+): { attacker: Fighter; defender: Fighter; resultLine: string | null } {
   if (move.damage > 0) {
     const nextDefenderHp = clampHp(defender.hp - move.damage, defender.maxHp);
-    const effectMsg =
-      move.damage <= DAMAGE_THRESHOLD ? EFFECT_WEAK : EFFECT_GREAT;
     return {
       attacker,
       defender: { ...defender, hp: nextDefenderHp },
-      resultLine: effectMsg,
+      resultLine: getEffectMessage(move.damage),
     };
   }
 
   const healAmount = move.healAmount ?? 0;
   const nextAttackerHp = clampHp(attacker.hp + healAmount, attacker.maxHp);
-  const actualHeal = nextAttackerHp - attacker.hp;
-  const effectMsg =
-    actualHeal <= DAMAGE_THRESHOLD ? EFFECT_WEAK : EFFECT_GREAT;
 
   return {
     attacker: { ...attacker, hp: nextAttackerHp },
     defender,
-    resultLine: effectMsg,
+    resultLine: `${attacker.name}의 체력이 회복되었다!`,
   };
 }
 

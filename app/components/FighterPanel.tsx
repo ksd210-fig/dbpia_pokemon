@@ -28,7 +28,7 @@ export function FighterPanel({ fighter, level, side }: FighterPanelProps) {
           <span className="text-[9px] shrink-0">HP</span>
           <div className="flex-1 h-[4px] border border-black bg-[#d0d0d0]">
             <div
-              className="h-full transition-[width] duration-300"
+              className="h-full transition-[width,background-color] duration-700 ease-out"
               style={{ width: `${hpPercent}%`, backgroundColor: barColor }}
             />
           </div>
@@ -47,7 +47,7 @@ export function FighterPanel({ fighter, level, side }: FighterPanelProps) {
         <span className="text-[9px] shrink-0">HP</span>
         <div className="flex-1 h-[4px] border border-black bg-[#d0d0d0]">
           <div
-            className="h-full transition-[width] duration-300"
+            className="h-full transition-[width,background-color] duration-700 ease-out"
             style={{ width: `${hpPercent}%`, backgroundColor: barColor }}
           />
         </div>

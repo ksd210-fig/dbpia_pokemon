@@ -14,14 +14,14 @@ export const INITIAL_PLAYER: Fighter = {
 };
 
 export const INITIAL_ENEMY: Fighter = {
-  name: "교수",
+  name: "논문",
   hp: 45,
   maxHp: 45,
   moves: [
     { name: "리뷰어 #2 소환", damage: 15, pp: 99, maxPp: 99 },
-    { name: "논문 리젝", damage: 30, pp: 3, maxPp: 3 },
-    { name: "주말 미팅 잡기", damage: 5, pp: 5, maxPp: 5 },
-    { name: "추가 실험 요청", damage: 10, pp: 3, maxPp: 3 },
+    { name: "메이저 리비전", damage: 30, pp: 3, maxPp: 3 },
+    { name: "참고문헌 추가 요청", damage: 5, pp: 5, maxPp: 5 },
+    { name: "영문법 수정 요청", damage: 10, pp: 3, maxPp: 3 },
   ],
 };
 

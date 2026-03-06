@@ -14,6 +14,7 @@ export default function Page() {
   const [displayIndex, setDisplayIndex] = useState(0);
   const [logReadyForMenu, setLogReadyForMenu] = useState(true);
   const prevLogLengthRef = useRef(state.log.length);
+  const logReadyForMenuRef = useRef(true);
 
   const log = state.log;
   const isProcessing = state.status === "processing";
@@ -22,15 +23,25 @@ export default function Page() {
     if (log.length === 0) {
       setDisplayIndex(0);
       setLogReadyForMenu(true);
+      logReadyForMenuRef.current = true;
       prevLogLengthRef.current = 0;
     } else if (log.length > prevLogLengthRef.current) {
-      setLogReadyForMenu(false);
+      const prevLength = prevLogLengthRef.current;
       prevLogLengthRef.current = log.length;
+      // 메뉴 대기 상태(마지막 로그 표시 완료)에서 새 로그가 들어오면 즉시 점프
+      if (logReadyForMenuRef.current) {
+        setDisplayIndex(prevLength);
+      }
+      setLogReadyForMenu(false);
+      logReadyForMenuRef.current = false;
     }
   }, [log.length]);
 
   useEffect(() => {
-    if (isProcessing) setLogReadyForMenu(false);
+    if (isProcessing) {
+      setLogReadyForMenu(false);
+      logReadyForMenuRef.current = false;
+    }
   }, [isProcessing]);
 
   useEffect(() => {
@@ -39,7 +50,10 @@ export default function Page() {
       const id = window.setTimeout(() => setDisplayIndex((i) => i + 1), MESSAGE_DELAY_MS);
       return () => clearTimeout(id);
     }
-    const id = window.setTimeout(() => setLogReadyForMenu(true), MESSAGE_DELAY_MS);
+    const id = window.setTimeout(() => {
+      setLogReadyForMenu(true);
+      logReadyForMenuRef.current = true;
+    }, MESSAGE_DELAY_MS);
     return () => clearTimeout(id);
   }, [log.length, displayIndex, log]);
 
