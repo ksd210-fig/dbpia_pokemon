@@ -2,6 +2,7 @@ export type Move = {
   name: string;
   damage: number;
   healAmount?: number;
+  selfDamage?: number;
   pp: number;
   maxPp: number;
   /** 기술 타입 (표시용, 예: "노말", "물") */

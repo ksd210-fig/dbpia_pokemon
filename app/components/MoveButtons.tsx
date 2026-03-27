@@ -17,6 +17,12 @@ const ARROW_DELTA: Record<string, number> = {
   ArrowUp: -2,
 };
 
+function playButtonSound() {
+  const sfx = new Audio('/pokemon-button.mp3');
+  sfx.volume = 0.8;
+  sfx.play().catch(() => {});
+}
+
 export function MoveButtons({ moves, status, onMove }: MoveButtonsProps) {
   const [hoveredIndex, setHoveredIndex] = useState<number>(0);
   const isIdle = status === "idle";
@@ -32,6 +38,7 @@ export function MoveButtons({ moves, status, onMove }: MoveButtonsProps) {
         setHoveredIndex((prev) => {
           const next = prev + ARROW_DELTA[e.key];
           if (next < 0 || next >= moves.length) return prev;
+          playButtonSound();
           return next;
         });
         return;
@@ -39,7 +46,10 @@ export function MoveButtons({ moves, status, onMove }: MoveButtonsProps) {
 
       if (e.key === "Enter" || e.key === "z" || e.key === "Z") {
         const move = moves[hoveredIndex];
-        if (move && move.pp > 0) onMove(hoveredIndex);
+        if (move && move.pp > 0) {
+          playButtonSound();
+          onMove(hoveredIndex);
+        }
       }
     };
 
@@ -61,16 +71,16 @@ export function MoveButtons({ moves, status, onMove }: MoveButtonsProps) {
               <button
                 key={move.name}
                 type="button"
-                className={`flex items-center gap-1 px-2 text-[11px] text-left font-[inherit] border-none bg-transparent cursor-pointer
+                className={`flex items-center gap-1 px-2 txt-move text-left font-[inherit] border-none bg-transparent cursor-pointer
                   ${isDisabled ? "opacity-40 cursor-not-allowed" : "active:bg-gray-100"}
                   ${index < 2 ? "border-b border-gray-200" : ""}
                 `}
-                onClick={() => onMove(index)}
+                onClick={() => { playButtonSound(); onMove(index); }}
                 disabled={isDisabled}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onTouchStart={() => setHoveredIndex(index)}
               >
-                <span className={`text-[11px] shrink-0 ${isHovered && !isDisabled ? "visible" : "invisible"}`}>
+                <span className={`txt-move shrink-0 ${isHovered && !isDisabled ? "visible" : "invisible"}`}>
                   ▶
                 </span>
                 <span className="leading-[1.4]">{move.name}</span>
@@ -79,25 +89,12 @@ export function MoveButtons({ moves, status, onMove }: MoveButtonsProps) {
           })}
         </div>
 
-        {/* PP / TYPE 패널 */}
-        <div className="w-[30%] max-w-[100px] px-2 text-[10px] leading-[2] flex flex-col justify-center">
-          {selectedMove ? (
-            <>
-              <div>
-                <span className="text-gray-500">PP</span>
-                <br />{selectedMove.pp}/{selectedMove.maxPp}
-              </div>
-              <div>
-                <span className="text-gray-500">TYPE</span>
-                <br />{selectedMove.type ?? "—"}
-              </div>
-            </>
-          ) : (
-            <>
-              <div><span className="text-gray-500">PP</span><br />—</div>
-              <div><span className="text-gray-500">TYPE</span><br />—</div>
-            </>
-          )}
+        {/* PP 패널 */}
+        <div className="w-[30%] max-w-[100px] px-2 txt-pp leading-[2] flex flex-col justify-center">
+          <div>
+            <span className="text-gray-500">PP</span>
+            <br />{selectedMove ? `${selectedMove.pp}/${selectedMove.maxPp}` : "—"}
+          </div>
         </div>
       </div>
     </section>

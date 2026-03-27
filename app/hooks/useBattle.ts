@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useReducer, useRef } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import {
   battleReducer,
   createInitialState,
@@ -12,9 +12,15 @@ import { TURN_DELAY_MS, MESSAGE_DELAY_MS } from "../data/fighters";
 
 export function useBattle() {
   const [state, dispatch] = useReducer(battleReducer, undefined, createInitialState);
+  const [hitTarget, setHitTarget] = useState<"player" | "enemy" | null>(null);
   const logRef = useRef<HTMLDivElement | null>(null);
   const latestStateRef = useRef(state);
   const turnTokenRef = useRef(0);
+
+  const flashHit = (target: "player" | "enemy") => {
+    setHitTarget(target);
+    window.setTimeout(() => setHitTarget(null), 600);
+  };
 
   useEffect(() => {
     latestStateRef.current = state;
@@ -43,15 +49,21 @@ export function useBattle() {
     const playerResult = applyMove(playerAfterUse, snapshot.enemy, playerMove);
 
     dispatch({ type: "PLAYER_MOVE", index: moveIndex });
-    dispatch({ type: "ADD_LOG", lines: [`대학원생은 ${playerMove.name}을 사용했다!`] });
+    const playerFlavorLines: string[] =
+      playerMove.name === "교수님 소환"
+        ? ["교수님은 영문도 모르고 대학원생을 공격했다!"]
+        : [];
+    dispatch({ type: "ADD_LOG", lines: [`대학원생은 ${playerMove.name}을(를) 사용했다!`, ...playerFlavorLines] });
 
-    // t+1200ms: HP 갱신
+    // (사용했다 + flavor) 메시지 수만큼 대기 후 HP 갱신
     window.setTimeout(() => {
       if (turnTokenRef.current !== token) return;
       dispatch({ type: "SET_PLAYER", fighter: playerResult.attacker });
       dispatch({ type: "SET_ENEMY", fighter: playerResult.defender });
+      if (playerResult.defender.hp < snapshot.enemy.hp) flashHit("enemy");
+      else if (playerResult.attacker.hp < playerAfterUse.hp) flashHit("player");
 
-      // t+2400ms: 효과 메시지
+      // 효과 메시지
       window.setTimeout(() => {
         if (turnTokenRef.current !== token) return;
         if (playerResult.resultLine) {
@@ -94,6 +106,7 @@ export function useBattle() {
               if (turnTokenRef.current !== token) return;
               dispatch({ type: "SET_ENEMY", fighter: enemyResult.attacker });
               dispatch({ type: "SET_PLAYER", fighter: enemyResult.defender });
+              if (enemyResult.defender.hp < playerResult.attacker.hp) flashHit("player");
 
               // t+2400ms: 효과 메시지
               window.setTimeout(() => {
@@ -109,7 +122,7 @@ export function useBattle() {
                   if (turnTokenRef.current !== token) return;
 
                   if (enemyResult.defender.hp <= 0) {
-                    dispatch({ type: "ADD_LOG", lines: ["대학원생은 쓰러졌다..."] });
+                    dispatch({ type: "ADD_LOG", lines: ["대학원생은 눈앞이 캄캄해졌다..."] });
                     dispatch({ type: "SET_STATUS", status: "lost" });
                     return;
                   }
@@ -121,7 +134,7 @@ export function useBattle() {
           }, TURN_DELAY_MS);
         }, afterEffectDelay);
       }, MESSAGE_DELAY_MS);
-    }, MESSAGE_DELAY_MS);
+    }, (1 + playerFlavorLines.length) * MESSAGE_DELAY_MS);
   };
 
   const handleRestart = () => {
@@ -129,5 +142,5 @@ export function useBattle() {
     dispatch({ type: "RESET" });
   };
 
-  return { state, logRef, runPlayerTurn, handleRestart };
+  return { state, logRef, runPlayerTurn, handleRestart, hitTarget };
 }

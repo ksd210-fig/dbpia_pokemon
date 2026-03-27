@@ -1,28 +1,58 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'DogicaPixel';
+  src: url('/dogicapixel.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'DogicaPixel';
+  src: url('/dogicapixelbold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Galmuri9';
+  src: url('/Galmuri9.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
 * {
   box-sizing: border-box;
 }
 
 :root {
-  --pixel-border: 3px solid #1a1a1a;
-  --pixel-border-thin: 2px solid #1a1a1a;
-  --bg-panel: #fff;
-  --bg-game: #e8e0d0;
-  --text: #1a1a1a;
+  /* 폰트 크기 — 여기서만 수정 */
+  --font-log:          14px;
+  --font-move:         14px;
+  --font-panel-name:   14px;
+  --font-panel-small:   7px; /* 레벨·HP 레이블·HP 수치 공통 */
+  --font-pp:           13px;
 }
 
 html,
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Galmuri9', 'Press Start 2P', monospace;
+  font-family: 'DogicaPixel', 'Galmuri9', monospace;
   font-weight: bold;
   background: #e8e0d0;
   color: #1a1a1a;
-  font-size: 10px;
   line-height: 1.6;
 }
+
+/* 텍스트 의미별 클래스 */
+.txt-log          { font-size: var(--font-log); }
+.txt-move         { font-size: var(--font-move); }
+.txt-panel-name   { font-size: var(--font-panel-name); }
+.txt-panel-level  { font-size: var(--font-panel-small); }
+.txt-panel-hp-label { font-size: var(--font-panel-small); }
+.txt-panel-hp-value { font-size: var(--font-panel-small); }
+.txt-pp           { font-size: var(--font-pp); }
 
 /* 모바일: 화면에 꽉 차게 / 데스크톱: 게임보이처럼 작은 고정 크기 (640:576 비율 유지) */
 .game-viewport {
@@ -33,6 +63,18 @@ body {
   /* 모바일: 뷰포트에 맞춤 */
   width: min(100vw, 640px, calc(100dvh * 640 / 576));
 }
+@keyframes hit-flash {
+  0%   { opacity: 1; }
+  20%  { opacity: 0; }
+  40%  { opacity: 1; }
+  60%  { opacity: 0; }
+  80%  { opacity: 1; }
+  100% { opacity: 1; }
+}
+.hit-flash {
+  animation: hit-flash 0.6s steps(1, end);
+}
+
 @media (min-width: 768px) {
   .game-viewport {
     width: 360px;

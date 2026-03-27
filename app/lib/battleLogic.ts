@@ -34,7 +34,7 @@ export function consumeMove(fighter: Fighter, index: number): Fighter {
   };
 }
 
-const EFFECT_WEAK = "효과는 미미한 듯 하다";
+const EFFECT_WEAK = "효과는 미미한 듯 하다..";
 const EFFECT_GREAT = "효과는 굉장했다!";
 const DAMAGE_THRESHOLD_LOW = 10;  // 이하면 미미
 const DAMAGE_THRESHOLD_HIGH = 20; // 이상이면 굉장
@@ -50,6 +50,15 @@ export function applyMove(
   defender: Fighter,
   move: Move
 ): { attacker: Fighter; defender: Fighter; resultLine: string | null } {
+  if (move.selfDamage && move.selfDamage > 0) {
+    const nextAttackerHp = clampHp(attacker.hp - move.selfDamage, attacker.maxHp);
+    return {
+      attacker: { ...attacker, hp: nextAttackerHp },
+      defender,
+      resultLine: getEffectMessage(move.selfDamage),
+    };
+  }
+
   if (move.damage > 0) {
     const nextDefenderHp = clampHp(defender.hp - move.damage, defender.maxHp);
     return {
@@ -59,8 +68,15 @@ export function applyMove(
     };
   }
 
-  const healAmount = move.healAmount ?? 0;
-  const nextAttackerHp = clampHp(attacker.hp + healAmount, attacker.maxHp);
+  if (!move.healAmount) {
+    return {
+      attacker,
+      defender,
+      resultLine: "하지만 아무런 일도 일어나지 않았다..",
+    };
+  }
+
+  const nextAttackerHp = clampHp(attacker.hp + move.healAmount, attacker.maxHp);
 
   return {
     attacker: { ...attacker, hp: nextAttackerHp },

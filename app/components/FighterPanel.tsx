@@ -19,13 +19,13 @@ export function FighterPanel({ fighter, level, side }: FighterPanelProps) {
 
   if (side === "enemy") {
     return (
-      <div className="border-[2px] border-black bg-white px-2 py-1 w-[45%] min-w-[110px]">
+      <div className="border-[2px] border-black bg-white px-2 py-1 w-[48%] min-w-[120px]">
         <div className="flex justify-between items-baseline mb-1">
-          <span className="text-[11px]">{fighter.name}</span>
-          <span className="text-[10px]">{levelLabel}</span>
+          <span className="txt-panel-name">{fighter.name}</span>
+          <span className="txt-panel-level">{levelLabel}</span>
         </div>
         <div className="flex items-center gap-1">
-          <span className="text-[9px] shrink-0">HP</span>
+          <span className="txt-panel-hp-label shrink-0">HP</span>
           <div className="flex-1 h-[4px] border border-black bg-[#d0d0d0]">
             <div
               className="h-full transition-[width,background-color] duration-700 ease-out"
@@ -40,11 +40,11 @@ export function FighterPanel({ fighter, level, side }: FighterPanelProps) {
   return (
     <div className="border-[2px] border-black bg-white px-2 py-1 w-[48%] min-w-[120px]">
       <div className="flex justify-between items-baseline mb-1">
-        <span className="text-[11px]">{fighter.name}</span>
-        <span className="text-[10px]">{levelLabel}</span>
+        <span className="txt-panel-name">{fighter.name}</span>
+        <span className="txt-panel-level">{levelLabel}</span>
       </div>
       <div className="flex items-center gap-1 mb-1">
-        <span className="text-[9px] shrink-0">HP</span>
+        <span className="txt-panel-hp-label shrink-0">HP</span>
         <div className="flex-1 h-[4px] border border-black bg-[#d0d0d0]">
           <div
             className="h-full transition-[width,background-color] duration-700 ease-out"
@@ -52,7 +52,7 @@ export function FighterPanel({ fighter, level, side }: FighterPanelProps) {
           />
         </div>
       </div>
-      <div className="text-right text-[10px]">
+      <div className="text-right txt-panel-hp-value">
         {fighter.hp}/{fighter.maxHp}
       </div>
     </div>
